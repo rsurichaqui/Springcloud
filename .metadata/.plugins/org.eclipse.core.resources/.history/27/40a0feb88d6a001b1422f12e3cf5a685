@@ -1,0 +1,5 @@
+package MPH.SGTIC.springbootserviciooauth.services;
+
+public interface IUsuarioService {
+
+}

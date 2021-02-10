@@ -1,0 +1,5 @@
+package MPH.SGTIC.springbootserviciooauth.security;
+
+public class SpringSecurityConfig {
+
+}

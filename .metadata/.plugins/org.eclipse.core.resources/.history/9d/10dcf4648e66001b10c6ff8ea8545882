@@ -1,0 +1,14 @@
+package MPH.SGTIC.springbootserviciooauth.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SpringSecurityConfig {
+	//Usamos inicailmente la implementacion de UsuarioDetalleService
+	@Autowired
+	private UserDetailService usuarioService;
+	//El Autowired impleneta interfaces
+	
+	
+}

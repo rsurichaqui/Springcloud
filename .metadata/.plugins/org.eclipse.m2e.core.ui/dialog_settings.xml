@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-oauth"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-usuarios-commons"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-usuario"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-gateway"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-eureka-server"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-item"/>
+			<item value="D:\Programacion\Java\Maven\Springcloud\springboot-servicio-producto"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+</section>

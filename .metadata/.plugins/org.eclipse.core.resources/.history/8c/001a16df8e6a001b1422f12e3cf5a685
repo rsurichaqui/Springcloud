@@ -1,0 +1,79 @@
+package MPH.SGTIC.springbootserviciooauth.security;
+
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+@Configuration
+@EnableResourceServer
+@EnableAuthorizationServer
+//La clase es habilitada como un servidor de Autorizacion
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+	
+	/*Inyectamos incialmente los metodos que definimos en el SpringSecurityConfig*/
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager; //este debe ser registrado luego en el Autorization Server
+
+	@Autowired
+	private InfoAdicionalToken infoAdicionalToken;
+
+	@Override
+	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+		security.tokenKeyAccess("permitAll()") //acceso publico
+		.checkTokenAccess("isAuthenticated()");  //para verificar preguntamos si el usuario es autnticado
+		//super.configure(security); deshabilitado luego de la segunda configuracion
+	}
+
+	@Override
+	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		/*Configuracion incial del ejercicio, lo registramo en memoria con fronendapp y la clace 12345*/
+		clients.inMemory().withClient("frontendapp").secret(passwordEncoder.encode("12345"))
+		.scopes("read", "write")
+		.authorizedGrantTypes("password", "refresh_token")
+		.accessTokenValiditySeconds(3600);
+	}
+
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		// TODO Auto-generated method stub
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken, accessTokenConverter()));
+		
+		endpoints.authenticationManager(authenticationManager)  //registramos el autentication managar
+		.tokenStore(tokenStore())   //definimos el token store, creando un metodo JwtTokenStore
+		.accessTokenConverter(accessTokenConverter());
+			//.tokenEnhancer(tokenEnhancerChain);
+	}
+	
+	@Bean
+	public JwtTokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter()); //recibe como argumento el access token conerter
+	}
+
+	/*Creamos un metodo que e devuelva el token converter, pero en JWT*/
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
+		
+		tokenConverter.setSigningKey("algun_codigo_secreto_aeiou"); //firma de la clave
+		return tokenConverter;
+	}
+
+
+}
